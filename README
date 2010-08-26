@@ -1,0 +1,31 @@
+This is merely a wrapper class around OpenMQ's Connection Factory to make is useable in a Spring configuration.   For us, that means making it useful for a JMS-to-JMS bridge from ActiveMQ (new system)to OpenMQ (legacy system).
+
+To use,
+
+1) build this project using maven
+2) Add OpenMQ jars to your ActiveMQ lib directory
+3) Add this jar to your ActiveMQ lib directory
+4) Add
+
+
+
+<bean id="OpenMQ"
+     class="com.centraldesktop.mq.openmq.QueueConnectionFactory">
+        <property name="serviceUrl" value="yourOpenMQhost.com:6076"/> <!-- your port number of course -->
+</bean>
+
+to your ActiveMQ config file (activemq.xml)
+
+5) 
+
+Add the bridge in your broker definition (also in activemq.xml)
+
+      <jmsBridgeConnectors>
+            <jmsQueueConnector outboundQueueConnectionFactory="#OpenMQ">
+                <outboundQueueBridges>
+                    <outboundQueueBridge
+                            outboundQueueName = "openmq.queue.name"
+                            localQueueName    = "activemq.queue.name"/>
+                 </outboundQueueBridges>
+            </jmsQueueConnector>
+        </jmsBridgeConnectors>
