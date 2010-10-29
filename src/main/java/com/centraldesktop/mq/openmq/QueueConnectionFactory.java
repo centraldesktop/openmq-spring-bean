@@ -23,6 +23,8 @@ public class QueueConnectionFactory implements javax.jms.QueueConnectionFactory 
         qcf = new com.sun.messaging.QueueConnectionFactory();
 
         qcf.setProperty(ConnectionConfiguration.imqReconnectEnabled, "true");
+        qcf.setProperty(ConnectionConfiguration.imqAddressList,
+                serviceUrl);
     }
 
     public void setServiceUrl(String url) throws JMSException {
